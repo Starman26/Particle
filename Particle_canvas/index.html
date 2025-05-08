@@ -10,7 +10,7 @@
       overflow: hidden;
       width: 100%;
       height: 100%;
-      background: white;
+      background: transparent; /* Fondo transparente */
     }
     canvas {
       display: block;
@@ -99,7 +99,7 @@
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = '#fff'; // Partículas blancas
         ctx.fill();
       });
 
