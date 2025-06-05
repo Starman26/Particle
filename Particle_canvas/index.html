@@ -1,115 +1,32 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Dona de Partículas</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orb Demo</title>
+  <!-- Importamos el CSS -->
+  <link rel="stylesheet" href="./orb.css" />
   <style>
+    /* Asegúrate de que html y body llenen el 100% para que el canvas también ocupe todo el espacio disponible */
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      width: 100%;
-      height: 100%;
-      background: transparent;
     }
-    canvas {
-      display: block;
+    #orb-root {
       width: 100%;
       height: 100%;
-      background: transparent;
     }
   </style>
 </head>
 <body>
-  <canvas id="particleCanvas"></canvas>
-  <script>
-    const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null };
+  <!-- Contenedor donde se montará la animación -->
+  <div id="orb-root" class="orb-container"></div>
 
-    const PARTICLE_COUNT = 1800;
-    const FRICTION = 0.92;
-    const ATTRACTION = 0.003;
-    const RETURN_FORCE = 0.0012;
-    const EFFECT_RADIUS = 200;
-    const RANDOM_FORCE = 0.12;
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', () => {
-      resize();
-      initParticles();
-    });
-    resize();
-
-    function initParticles() {
-      particles = [];
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      const R_outer = Math.min(cx, cy) * 0.65;  // más pequeño
-      const R_inner = R_outer * 0.6;            // centro hueco
-
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const r = R_inner + (Math.random() * (R_outer - R_inner));
-        const x = cx + Math.cos(angle) * r;
-        const y = cy + Math.sin(angle) * r;
-        particles.push({ x, y, ox: x, oy: y, vx: 0, vy: 0, size: 1.2 });
-      }
-    }
-    initParticles();
-
-    canvas.addEventListener('mousemove', e => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-    });
-    canvas.addEventListener('mouseleave', () => {
-      mouse.x = null;
-      mouse.y = null;
-    });
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // transparente
-
-      particles.forEach(p => {
-        p.vx += (Math.random() - 0.5) * RANDOM_FORCE;
-        p.vy += (Math.random() - 0.5) * RANDOM_FORCE;
-
-        const dx0 = p.ox - p.x;
-        const dy0 = p.oy - p.y;
-        p.vx += dx0 * RETURN_FORCE;
-        p.vy += dy0 * RETURN_FORCE;
-
-        if (mouse.x !== null) {
-          const dxm = mouse.x - p.x;
-          const dym = mouse.y - p.y;
-          const dist2 = dxm * dxm + dym * dym;
-          if (dist2 < EFFECT_RADIUS * EFFECT_RADIUS) {
-            const dist = Math.sqrt(dist2);
-            const force = (1 - dist / EFFECT_RADIUS) * ATTRACTION;
-            p.vx += dxm * force;
-            p.vy += dym * force;
-          }
-        }
-
-        p.vx *= FRICTION;
-        p.vy *= FRICTION;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
-      });
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
+  <!-- Importamos orb.js como módulo ES -->
+  <script type="module" src="./orb.js"></script>
 </body>
 </html>
