@@ -30,10 +30,10 @@
 
     const PARTICLE_COUNT = 2000;
     const FRICTION = 0.92;
-    const ATTRACTION = 0.03;
+    const ATTRACTION = 0.003;
     const RETURN_FORCE = 0.0012;
     const EFFECT_RADIUS = 200;
-    const RANDOM_FORCE = 0.20;
+    const RANDOM_FORCE = 0.12;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -103,7 +103,7 @@
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = '#858585';
         ctx.fill();
       });
 
